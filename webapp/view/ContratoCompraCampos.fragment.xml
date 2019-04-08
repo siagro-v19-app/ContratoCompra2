@@ -305,7 +305,7 @@
 												showValueHelp="true"
 												valueHelpRequest="handleSearchUnidade1"
 												suggestionItems="{
-													path: '/CreditoMonsantos',
+													path: '/UnidadeMedidas',
 													templateShareable: true
 												}"
 												id="unidademedida">
