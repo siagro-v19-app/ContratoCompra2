@@ -2,7 +2,7 @@ sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
 	"br/com/idxtecContratoCompra/model/models",
-	"br/com/idxtecContratoCompra/controller/ErrorHandler"
+	"br/com/idxtecContratoCompra/services/ErrorHandler"
 ], function(UIComponent, Device, models, ErrorHandler) {
 	"use strict";
 
@@ -27,8 +27,6 @@ sap.ui.define([
 			this.setModel(models.createViewModel(), "view");
 			
 			this.getRouter().initialize();
-			
-			jQuery.sap.registerModulePath("idxtec.lib.fragment", "/resources/idxtec/lib/fragment");
 		},
 		
 		destroy: function(){

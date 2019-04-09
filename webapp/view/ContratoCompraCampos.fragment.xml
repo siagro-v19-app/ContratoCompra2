@@ -35,11 +35,21 @@
 										<DatePicker id="emissao" dateValue="{model>/Emissao}" displayFormat="dd.MM.yyyy" placeholder="dd.mm.aaaa"/>
 					                    
 					                    <Label text="Moeda" labelFor="moeda" required="true"/>
-					                    <ComboBox selectedKey="{model>/Moeda}"
-					                    	items="{path: '/Moedas'}"
-					                    	id="moeda">
-											<core:ListItem key="{Codigo}" text="{Nome}"/>
-										</ComboBox>
+					                    <Input selectedKey="{model>/Moeda}"
+											textFormatMode="KeyValue"
+											showSuggestion="true"
+											showValueHelp="true"
+											valueHelpRequest="handleSearchMoeda"
+											suggestionItems="{
+												path: '/Moedas',
+												events: {
+													dataReceived: '.moedaReceived'
+												}}"
+											id="moeda">
+											<suggestionItems>
+												<core:ListItem key="{Codigo}" text="{Nome}"/>
+											</suggestionItems>
+										</Input>
 										
 										<Label text="Produto" labelFor="produto" required="true"/>
 										<Input selectedKey="{
@@ -209,11 +219,24 @@
 										</Input>
 										
 					                    <Label text="Cotação" labelFor="cotacao"/>
-					                    <ComboBox selectedKey="{path: 'model>/Cotacao', type: 'sap.ui.model.odata.type.Int32'}"
-					                    	items="{path: '/CotacaoMoedas'}"
-					                    	id="cotacao">
-											<core:ListItem key="{Id}" text="{Cotacao}"/>
-										</ComboBox>
+					                    <Input selectedKey="{
+												path: 'model>/Cotacao',
+												type: 'sap.ui.model.odata.type.Int32'
+											}"
+											textFormatMode="KeyValue"
+											showSuggestion="true"
+											showValueHelp="true"
+											valueHelpRequest="handleSearchCotacao"
+											suggestionItems="{
+												path: '/CotacaoMoedas',
+												events: {
+													dataReceived: '.cotacaoReceived'
+												}}"
+											id="cotacao">
+											<suggestionItems>
+												<core:ListItem key="{Id}" text="{Cotacao}"/>
+											</suggestionItems>
+										</Input>
 										
 					                    <Label text="Alíquota Funrural" labelFor="aliquota"/>
 										<Input id="aliquota" value="{path: 'model>/AliquotaFunrural', 
@@ -262,7 +285,10 @@
 												valueHelpRequest="handleSearchArmazem"
 												suggestionItems="{
 													path: '/LocalEstoques',
-													templateShareable: true
+													templateShareable: true,
+													events: {
+														dataReceived: '.armazemReceived'
+													}
 												}"
 												id="armazem">
 												<suggestionItems>
@@ -284,7 +310,10 @@
 												valueHelpRequest="handleSearchRoyalties"
 												suggestionItems="{
 													path: '/CreditoMonsantos',
-													templateShareable: true
+													templateShareable: true,
+													events: {
+														dataReceived: '.royaltiesReceived'
+													}
 												}"
 												id="royalties">
 												<suggestionItems>
@@ -306,11 +335,14 @@
 												valueHelpRequest="handleSearchUnidade1"
 												suggestionItems="{
 													path: '/UnidadeMedidas',
-													templateShareable: true
+													templateShareable: true,
+													events: {
+														dataReceived: '.unidadeReceived1'
+													}
 												}"
 												id="unidademedida">
 												<suggestionItems>
-													<core:ListItem key="{Id}" text="{Descricao}"/>
+													<core:ListItem key="{Id}" text="{Sigla}"/>
 												</suggestionItems>
 											</Input>
 										</t:template>

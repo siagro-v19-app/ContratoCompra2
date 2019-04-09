@@ -10,7 +10,7 @@ sap.ui.define([
 			this._oView = oView;
 			this._inputId = sInputId;
 			
-			var sFrag = "br.com.idxtecContratoCompra.view.CreditoMonsantoHelpDialog"; 
+			var sFrag = "br.com.idxtecContratoCompra.helpers.ProdutoHelpDialog"; 
 			if (!this._valueHelpDialog) {
 				this._valueHelpDialog = sap.ui.xmlfragment(sFrag,this);
 				this._oView.addDependent(this._valueHelpDialog);

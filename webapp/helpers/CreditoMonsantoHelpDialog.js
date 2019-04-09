@@ -6,13 +6,11 @@ sap.ui.define([
 	
 	return {
 		
-		handleValueHelp: function(oView, sInputId, oController) {
+		handleValueHelp: function(oView, sInputId) {
 			this._oView = oView;
 			this._inputId = sInputId;
 			
-			oController.getOwnerComponent().getModel().refresh(true);
-
-			var sFrag = "br.com.idxtecContratoCompra.view.SafraHelpDialog"; 
+			var sFrag = "br.com.idxtecContratoCompra.helpers.CreditoMonsantoHelpDialog"; 
 			if (!this._valueHelpDialog) {
 				this._valueHelpDialog = sap.ui.xmlfragment(sFrag,this);
 				this._oView.addDependent(this._valueHelpDialog);
@@ -36,6 +34,7 @@ sap.ui.define([
 			if (oSelectedItem) {
 				var oInput = sap.ui.getCore().byId(this._inputId); 
 				var sId = oSelectedItem.getDescription();
+
 				oInput.setSelectedKey(sId);
 			}
 			evt.getSource().getBinding("items").filter([]);

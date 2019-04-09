@@ -3,16 +3,19 @@ sap.ui.define([
 	"sap/ui/core/routing/History",
 	"sap/m/MessageBox",
 	"sap/ui/model/json/JSONModel",
-	"br/com/idxtecContratoCompra/controller/ProdutoHelpDialog",
-	"br/com/idxtecContratoCompra/controller/UnidadeMedidaHelpDialog",
-	"br/com/idxtecContratoCompra/controller/CorretorHelpDialog",
-	"br/com/idxtecContratoCompra/controller/SafraHelpDialog",
-	"br/com/idxtecContratoCompra/controller/VariedadeHelpDialog",
-	"br/com/idxtecContratoCompra/controller/LocalEstoqueHelpDialog",
-	"br/com/idxtecContratoCompra/controller/CreditoMonsantoHelpDialog"
-], function(Controller, History, MessageBox, JSONModel, ProdutoHelpDialog,
+	"br/com/idxtecContratoCompra/helpers/MoedaHelpDialog",
+	"br/com/idxtecContratoCompra/helpers/CotacaoMoedaHelpDialog",
+	"br/com/idxtecContratoCompra/helpers/ProdutoHelpDialog",
+	"br/com/idxtecContratoCompra/helpers/UnidadeMedidaHelpDialog",
+	"br/com/idxtecContratoCompra/helpers/CorretorHelpDialog",
+	"br/com/idxtecContratoCompra/helpers/SafraHelpDialog",
+	"br/com/idxtecContratoCompra/helpers/VariedadeHelpDialog",
+	"br/com/idxtecContratoCompra/helpers/LocalEstoqueHelpDialog",
+	"br/com/idxtecContratoCompra/helpers/CreditoMonsantoHelpDialog",
+	"br/com/idxtecContratoCompra/services/Session"
+], function(Controller, History, MessageBox, JSONModel, MoedaHelpDialog, CotacaoMoedaHelpDialog, ProdutoHelpDialog,
 	UnidadeMedidaHelpDialog, CorretorHelpDialog, SafraHelpDialog, VariedadeHelpDialog, LocalEstoqueHelpDialog,
-	CreditoMonsantoHelpDialog) {
+	CreditoMonsantoHelpDialog, Session) {
 	"use strict";
 
 	return Controller.extend("br.com.idxtecContratoCompra.controller.ContratoCompraAdd", {
@@ -39,28 +42,54 @@ sap.ui.define([
         	}, oTabContainer);
 		},
 		
-		getModel : function(sModel) {
-			return this.getOwnerComponent().getModel(sModel);	
+		moedaReceived: function() {
+			this.getView().byId("moeda").setSelectedKey(this.getModel("model").getProperty("/Moeda"));
+		},
+		
+		cotacaoReceived: function() {
+			this.getView().byId("cotacao").setSelectedKey(this.getModel("model").getProperty("/Cotacao"));
 		},
 		
 		produtoReceived: function() {
-			//this.getView().byId("produto").setSelectedKey(this.getModel("model").getProperty("/Produto"));
+			this.getView().byId("produto").setSelectedKey(this.getModel("model").getProperty("/Produto"));
 		},
 		
 		unidadeReceived: function() {
-			//this.getView().byId("unidade").setSelectedKey(this.getModel("model").getProperty("/Unidade"));
+			this.getView().byId("unidade").setSelectedKey(this.getModel("model").getProperty("/Unidade"));
 		},
 		
 		corretorReceived: function() {
-			//this.getView().byId("corretor").setSelectedKey(this.getModel("model").getProperty("/Corretor"));
+			this.getView().byId("corretor").setSelectedKey(this.getModel("model").getProperty("/Corretor"));
 		},
 		
 		safraReceived: function() {
-			//this.getView().byId("safra").setSelectedKey(this.getModel("model").getProperty("/Safra"));
+			this.getView().byId("safra").setSelectedKey(this.getModel("model").getProperty("/Safra"));
 		},
 		
 		variedadeReceived: function() {
-			//this.getView().byId("variedade").setSelectedKey(this.getModel("model").getProperty("/Variedade"));
+			this.getView().byId("variedade").setSelectedKey(this.getModel("model").getProperty("/Variedade"));
+		},
+		
+		armazemReceived: function() {
+			this.getView().byId("armazem").setSelectedKey(this.getModel("contratosaldo").getProperty("/Armazem"));
+		},
+		
+		royaltiesReceived: function() {
+			this.getView().byId("royalties").setSelectedKey(this.getModel("contratosaldo").getProperty("/Royalties"));
+		},
+		
+		unidadeReceived1: function() {
+			this.getView().byId("unidademedida").setSelectedKey(this.getModel("contratosaldo").getProperty("/UnidadeMedida"));
+		},
+		
+		handleSearchMoeda: function(oEvent){
+			var sInputId = oEvent.getParameter("id");
+			MoedaHelpDialog.handleValueHelp(this.getView(), sInputId);
+		},
+		
+		handleSearchCotacao: function(oEvent){
+			var sInputId = oEvent.getParameter("id");
+			CotacaoMoedaHelpDialog.handleValueHelp(this.getView(), sInputId);
 		},
 		
 		handleSearchProduto: function(oEvent){
@@ -128,7 +157,12 @@ sap.ui.define([
 				"AliquotaFunrural": 0.00,
 				"Observacoes": "",
 				"FiscalEncerrado": false,
-				"RetemFunrural": false
+				"RetemFunrural": false,
+				"Empresa" : Session.get("EMPRESA_ID"),
+				"Usuario": Session.get("USUARIO_ID"),
+				"EmpresaDetails": { __metadata: { uri: "/Empresas(" + Session.get("EMPRESA_ID") + ")"}},
+				"UsuarioDetails": { __metadata: { uri: "/Usuarios(" + Session.get("USUARIO_ID") + ")"}}
+				
 			};
 			
 			oContratoModel.setData(oContrato);
@@ -137,11 +171,15 @@ sap.ui.define([
 			this.getView().setModel(oContratoModel,"model");
 			this.getView().setModel(oContratoSaldoModel,"contratosaldo");
 			
+			this.getView().byId("moeda").setValue(null);
+			this.getView().byId("cotacao").setValue(null);
 			this.getView().byId("produto").setValue(null);
 			this.getView().byId("unidade").setValue(null);
 			this.getView().byId("corretor").setValue(null);
 			this.getView().byId("safra").setValue(null);
 			this.getView().byId("variedade").setValue(null);
+			this.getView().byId("royalties").setValue(null);
+			this.getView().byId("armazem").setValue(null);
 		},
 		
 		
@@ -160,7 +198,11 @@ sap.ui.define([
 				Royalties: 0,
 				UnidadeMedida: 0,
 				Quantidade: 1,
-				Saldo: 0
+				Saldo: 0,
+				Empresa: Session.get("EMPRESA_ID"),
+				Usuario: Session.get("USUARIO_ID"),
+				EmpresaDetails: { __metadata: { uri: "/Empresas(" + Session.get("EMPRESA_ID") + ")"}},
+				UsuarioDetails: { __metadata: { uri: "/Usuarios(" + Session.get("USUARIO_ID") + ")"}}
 	    	});
 			this.getView().getModel("contratosaldo").setProperty("/", oNovoItem);
 		},
@@ -324,7 +366,11 @@ sap.ui.define([
 		
 		fechar: function(oEvent) {
 			this.navBack();
-		}
+		},
+		
+		getModel : function(sModel) {
+			return this.getOwnerComponent().getModel(sModel);	
+		},
 	});
 
 });
