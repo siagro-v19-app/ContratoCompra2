@@ -8,149 +8,148 @@ width="100%"
 xmlns:t="sap.ui.table">
 	<App id="app">
 		<pages>
-			<Page showHeader="false">
+			<Page showHeader="false" class="sapUiContentPadding" enableScrolling="false">
 				<content>
-					<VBox class="sapUiSmallMargin">
-						<Panel headerText="Contrato Compra">
-							<t:Table id="tableContrato"
-								rows="{path: '/ContratoCompras',
-										parameters: {
-											expand: 'CorretorDetails,
-											CotacaoMoedaDetails,
-											MoedaDetails,
-											ProdutoDetails,
-											SafraDetails,
-											ContratoCompraSaldoDetails,
-											UnidadeMedidaDetails,
-											VariedadeDetails'
-										}
-									}"
-								selectionMode="Single"
-								selectionBehavior="Row"
-								enableSelectAll="false"
-								editable="true"
-								visibleRowCountMode="Interactive"
-								enableBusyIndicator="true"
-								alternateRowColors="true"
-								enableCustomFilter="false">
-								<t:toolbar>
-									<Toolbar>
-										<Title text="Lista de Contratos"/> 
-									</Toolbar> 
-								</t:toolbar>
-								<t:columns>
-									<t:Column filterProperty="Numero" sortProperty="Numero" width="100px">
-										<Label text="Número"/>
-										<t:template>
-											<Text text="{Numero}" wrapping="false"/>
-										</t:template>
-									</t:Column>
-									<t:Column filterProperty="Emissao" sortProperty="Emissao" width="100px">
-										<Label text="Emissão"/>
-										<t:template>
-											<Text text="{
-												path : 'Emissao',
-												type : 'sap.ui.model.type.Date',
-												formatOptions: {
-													style : 'short'
-												}}"
-												wrapping="false"/>
-										</t:template>
-									</t:Column>
-									<t:Column filterProperty="ProdutoDetails/Descricao"
-									sortProperty="ProdutoDetails/Descricao" width="150px">
-										<Label text="Produto"/>
-										<t:template>
-											<Text text="{ProdutoDetails/Descricao}" wrapping="false"/>
-										</t:template>
-									</t:Column>
-									<t:Column filterProperty="Quantidade" sortProperty="Quantidade" width="100px">
-										<Label text="Quantidade"/>
-										<t:template>
-											<Text text="{path: 'Quantidade', 
-												type: 'sap.ui.model.odata.type.Single',
-			                            		formatOptions:{
-			                            			decimals: 2,
-			                                		decimalSeparator: ','
-			                            		}}"
-			                            		wrapping="false"/>
-										</t:template>
-									</t:Column>
-									<t:Column filterProperty="MoedaDetails/Nome"
-									sortProperty="MoedaDetails/Nome" width="80px">
-										<Label text="Moeda"/>
-										<t:template>
-											<Text text="{MoedaDetails/Nome}" wrapping="false"/>
-										</t:template>
-									</t:Column>
-									<t:Column filterProperty="ValorUnitario" sortProperty="ValorUnitario" width="100px">
-										<Label text="Valor unitário"/>
-										<t:template>
-											<Text text="{path: 'ValorUnitario', 
-												type: 'sap.ui.model.odata.type.Single',
-			                            		formatOptions:{
-			                            			decimals: 2,
-			                                		decimalSeparator: ','
-			                            		}}"
-			                            		wrapping="false"/>
-										</t:template>
-									</t:Column>
-									<t:Column filterProperty="Comissao" sortProperty="Comissao" width="100px">
-										<Label text="Comissão"/>
-										<t:template>
-											<Text text="{path: 'Comissao',
-												type: 'sap.ui.model.odata.type.Single',
-				                            		formatOptions:{
-				                            			decimals: 2,
-				                                		decimalSeparator: ','
-				                            		}}"
-				                            		wrapping="false"/>
-										</t:template>
-									</t:Column>
-									<t:Column filterProperty="UnidadeMedidaDetails/Descricao"
-									sortProperty="UnidadeMedidaDetails/Descricao" width="150px">
-										<Label text="Unidade"/>
-										<t:template>
-											<Text text="{UnidadeMedidaDetails/Descricao}" wrapping="false"/>
-										</t:template>
-									</t:Column>
-									<t:Column filterProperty="TipoFrete" sortProperty="TipoFrete" width="100px">
-										<Label text="Tipo de Frete"/>
-										<t:template>
-											<Text text="{TipoFrete}" wrapping="false"/>
-										</t:template>
-									</t:Column>
-									<t:Column filterProperty="Modalidade" sortProperty="Modalidade" width="150px">
-										<Label text="Modalidade"/>
-										<t:template>
-											<Text text="{Modalidade}" wrapping="false"/>
-										</t:template>
-									</t:Column>
-									<t:Column filterProperty="Status" sortProperty="Status" width="100px">
-										<Label text="Status"/>
-										<t:template>
-											<Text text="{Status}" wrapping="false"/>
-										</t:template>
-									</t:Column>
-								</t:columns>
-								<t:footer>
-									<Toolbar>
-										<Button icon="sap-icon://refresh" press="onRefresh"/>
-										<ToolbarSpacer/>
-										<Button icon="sap-icon://filter"/>
-										<Button icon="sap-icon://clear-filter"/>
-									</Toolbar>
-								</t:footer>
-							</t:Table>
-						</Panel>
-					</VBox>
+					<t:Table id="tableContrato"
+						rows="{path: '/ContratoCompras',
+								sorter: {
+									path: 'Numero'
+								},	
+								parameters: {
+									expand: 'CorretorDetails,
+									CotacaoMoedaDetails,
+									MoedaDetails,
+									ProdutoDetails,
+									SafraDetails,
+									ContratoCompraSaldoDetails,
+									UnidadeMedidaDetails,
+									VariedadeDetails'
+								}
+							}"
+						selectionMode="Single"
+						selectionBehavior="Row"
+						class="sapUiSizeCondensed"
+						visibleRowCountMode="Auto"
+						enableBusyIndicator="true"
+						alternateRowColors="true">
+						<t:toolbar>
+							<Toolbar>
+								<Title text="Lista de Contratos"/>
+								<ToolbarSpacer/>
+								<SearchField placeholder="Pesquisar contrato..." width="30%" search="filtraContrato"/>
+							</Toolbar> 
+						</t:toolbar>
+						<t:columns>
+							<t:Column id="columnEmpresa" filtered="true" width="100px" >
+								<Label text="Empresa" wrapping="true"/>
+								<t:template>
+									<Text text="{Empresa}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column id="columnNumero" filterProperty="Numero" sortProperty="Numero" width="100px">
+								<Label text="Número"/>
+								<t:template>
+									<Text text="{Numero}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column filterProperty="Emissao" sortProperty="Emissao" width="100px">
+								<Label text="Emissão"/>
+								<t:template>
+									<Text text="{
+										path : 'Emissao',
+										type : 'sap.ui.model.type.Date',
+										formatOptions: {
+											style : 'short'
+										}}"
+										wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column filterProperty="ProdutoDetails/Descricao"
+							sortProperty="ProdutoDetails/Descricao" width="150px">
+								<Label text="Produto"/>
+								<t:template>
+									<Text text="{ProdutoDetails/Descricao}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column filterProperty="Quantidade" sortProperty="Quantidade" width="100px">
+								<Label text="Quantidade"/>
+								<t:template>
+									<Text text="{path: 'Quantidade', 
+										type: 'sap.ui.model.odata.type.Single',
+	                            		formatOptions:{
+	                            			decimals: 2,
+	                                		decimalSeparator: ','
+	                            		}}"
+	                            		wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column filterProperty="MoedaDetails/Nome"
+							sortProperty="MoedaDetails/Nome" width="80px">
+								<Label text="Moeda"/>
+								<t:template>
+									<Text text="{MoedaDetails/Nome}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column filterProperty="ValorUnitario" sortProperty="ValorUnitario" width="100px">
+								<Label text="Valor unitário"/>
+								<t:template>
+									<Text text="{path: 'ValorUnitario', 
+										type: 'sap.ui.model.odata.type.Single',
+	                            		formatOptions:{
+	                            			decimals: 2,
+	                                		decimalSeparator: ','
+	                            		}}"
+	                            		wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column filterProperty="Comissao" sortProperty="Comissao" width="100px">
+								<Label text="Comissão"/>
+								<t:template>
+									<Text text="{path: 'Comissao',
+										type: 'sap.ui.model.odata.type.Single',
+		                            		formatOptions:{
+		                            			decimals: 2,
+		                                		decimalSeparator: ','
+		                            		}}"
+		                            		wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column filterProperty="UnidadeMedidaDetails/Descricao"
+							sortProperty="UnidadeMedidaDetails/Descricao" width="150px">
+								<Label text="Unidade"/>
+								<t:template>
+									<Text text="{UnidadeMedidaDetails/Descricao}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column filterProperty="TipoFrete" sortProperty="TipoFrete" width="100px">
+								<Label text="Tipo de Frete"/>
+								<t:template>
+									<Text text="{TipoFrete}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column filterProperty="Modalidade" sortProperty="Modalidade" width="150px">
+								<Label text="Modalidade"/>
+								<t:template>
+									<Text text="{Modalidade}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column filterProperty="Status" sortProperty="Status" width="100px">
+								<Label text="Status"/>
+								<t:template>
+									<Text text="{Status}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+						</t:columns>
+					</t:Table>
 				</content>
 				<footer>
 					<Toolbar>
 						<ToolbarSpacer/>
-						<Button icon="sap-icon://add" text="Incluir novo" press="onIncluir"/>
-						<Button icon="sap-icon://edit" text="Editar" press="onEditar"/>
-						<Button icon="sap-icon://delete" text="Remover" press="onRemover"/>
+						<Button id="incluir" text="Incluir novo" press="onIncluir" type="Emphasized"/>
+						<Button id="editar" text="Editar" press="onEditar"/>
+						<Button id="remover" text="Remover" press="onRemover"/>
+						<ToolbarSeparator/>
+						<Button icon="sap-icon://refresh" press="onRefresh"/>
 					</Toolbar>
 				</footer>
 			</Page>

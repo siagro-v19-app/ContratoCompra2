@@ -133,6 +133,7 @@ sap.ui.define([
 		},
 		
 		_routerMatch: function() {
+			var oViewModel = this.getOwnerComponent().getModel("view");
 			var oContratoModel = new JSONModel();
 			var oContratoSaldoModel = new JSONModel();
 			var oContrato = {
@@ -162,8 +163,12 @@ sap.ui.define([
 				"Usuario": Session.get("USUARIO_ID"),
 				"EmpresaDetails": { __metadata: { uri: "/Empresas(" + Session.get("EMPRESA_ID") + ")"}},
 				"UsuarioDetails": { __metadata: { uri: "/Usuarios(" + Session.get("USUARIO_ID") + ")"}}
-				
 			};
+			
+			oViewModel.setData({
+				titulo: "Inserir Contrato",
+				numEdit: true
+			});
 			
 			oContratoModel.setData(oContrato);
 			oContratoSaldoModel.setData([]);

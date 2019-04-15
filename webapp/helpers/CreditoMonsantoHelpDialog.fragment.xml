@@ -3,8 +3,8 @@
 	xmlns:core="sap.ui.core">
 	<SelectDialog
 		title="Crédito Monsanto"
-		class="sapUiPopupWithPadding"
-		items="{/CreditoMonsantos}"
+		class="sapUiPopupWithPadding sapUiSizeCompact"
+		items="{path: '/CreditoMonsantos', sorter: {path: 'Descricao'}}"
 		search="_handleValueHelpSearch"
 		confirm="_handleValueHelpClose"
 		cancel="_handleValueHelpClose">
